@@ -7,15 +7,18 @@ import {
 	TableRow,
 	TableCell,
 	Button,
-	Switch,
 	FormControlLabel,
+	Radio, 
+	RadioGroup,
+	FormLabel,
+	FormControl
 } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
+import { Component, useState } from "react";
 
 interface Props {
 	isOpen: boolean;
@@ -25,14 +28,15 @@ interface Props {
 
 interface UserInput {
 	time: Dayjs | null;
-	arriving: boolean;
+	arriving: string;
 }
 
 export const AddInoutModal = ({ isOpen, onClose, handleClose }: Props) => {
 	const [userInput, setUserInput] = useState<UserInput>({
 		time: dayjs().startOf("day").add(7, "hours"),
-		arriving: true,
+		arriving: "Presente",
 	});
+
 	const style = {
 		position: "absolute",
 		top: "50%",
@@ -72,15 +76,30 @@ export const AddInoutModal = ({ isOpen, onClose, handleClose }: Props) => {
 							</TableRow>
 							<TableRow>
 								<TableCell colSpan={2}>
-									<FormControlLabel
-										control={
-											<Switch
-												checked={userInput.arriving}
-												onChange={(e) => setUserInput({ ...userInput, arriving: e.target.checked })}
+									<FormControl component="fieldset">
+										<FormLabel component="legend">Selecciona una opción:</FormLabel>
+										<RadioGroup
+											name="options"
+											value={userInput.arriving}
+											onChange={(e) => setUserInput({ ...userInput, arriving: e.target.value })}
+										>
+											<FormControlLabel
+											value="Presente"
+												control={<Radio />}
+												label="Presente"
 											/>
-										}
-										label={"El usuario está llegando"}
-									/>
+											<FormControlLabel
+												value="Retardo"
+												control={<Radio />}
+												label="Retardo"
+											/>
+											<FormControlLabel
+												value="Ausente"
+												control={<Radio />}
+												label="Ausente"
+											/>
+										</RadioGroup>
+									</FormControl>
 								</TableCell>
 							</TableRow>
 						</TableBody>

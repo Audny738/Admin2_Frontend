@@ -96,7 +96,7 @@ export const AdminUsersEmployees = () => {
 		password: "",
 		salary: 0,
 		jobDescription: "",
-		present: false,
+		present: "Ausente",
 		schedules: [],
 		scheduleObjs: undefined,
 	});
@@ -352,7 +352,7 @@ export const AdminUsersEmployees = () => {
 													</List>
 												</StyledTableCell>
 												<StyledTableCell scope="row" align="center">
-													{employee.present ? "Presente" : "Ausente"}
+													{employee.present}
 												</StyledTableCell>
 												<StyledTableCell scope="row" align="center">
 													<IconButton onClick={() => handleEditEmployee(employee.id)}>
