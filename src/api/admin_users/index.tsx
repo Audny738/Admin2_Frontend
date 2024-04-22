@@ -166,7 +166,7 @@ export const useGetDays = () => {
 
 interface InoutRecord {
 	employee_id: number;
-	arriving: boolean;
+	arriving: string;
 	dateTimeRecord: string;
 }
 

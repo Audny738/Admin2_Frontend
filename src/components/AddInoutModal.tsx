@@ -84,7 +84,7 @@ export const AddInoutModal = ({ isOpen, onClose, handleClose }: Props) => {
 											onChange={(e) => setUserInput({ ...userInput, arriving: e.target.value })}
 										>
 											<FormControlLabel
-											value="Presente"
+												value="Presente"
 												control={<Radio />}
 												label="Presente"
 											/>
