@@ -175,7 +175,7 @@ export const AdminUsersEmployees = () => {
 		toggleInout();
 	};
 
-	const addInout = (dateTimeRecord: string, arriving: string) => {
+	const addInout = (dateTimeRecord: string, arriving: boolean) => {
 		registerInout.mutate(
 			{ employee_id: currentEmployee.id, arriving, dateTimeRecord },
 			{
