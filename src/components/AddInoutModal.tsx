@@ -10,7 +10,7 @@ import {
 	FormControlLabel,
 	FormControl,
 	FormLabel,
-	Radio,
+	Radio, // Mantenimiento-AMS-2-2: Se importa Radio, RadioGroup y se remueve Switch
 	RadioGroup,
 } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -76,6 +76,7 @@ export const AddInoutModal = ({ isOpen, onClose, handleClose }: Props) => {
 							<TableRow>
 								<TableCell colSpan={2}>
 									<FormControl component="fieldset">
+										{/*Mantenimiento-AMS-2-2: Se Reemplazó el Switch por un RadioGroup de 2 elementos: Presente y Ausente*/}
 											<FormLabel component="legend">Selecciona una opción:</FormLabel>
 											<RadioGroup
 												name="options"
