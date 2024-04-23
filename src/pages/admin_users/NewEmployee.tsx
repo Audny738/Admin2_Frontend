@@ -105,6 +105,7 @@ export const AdminUsersCreateEmployee = () => {
 		jobId: 0,
 		schedules: [],
 	});
+	
 
 	interface ScheduleCreationStructure {
 		entryDayId: number;
@@ -154,16 +155,46 @@ export const AdminUsersCreateEmployee = () => {
 		}
 	};
 
+	const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
+
+	const validatePassword = (input: string) => {
+		const minLength = 12;
+		const hasUpperCase = /[A-Z]/.test(input);
+		const hasLowerCase = /[a-z]/.test(input);
+		const hasNumber = /[0-9]/.test(input);
+		const hasSpecialChar = /[#$%&¿?!¡=+*-]/.test(input);
+
+		const isValid =
+		input.length >= minLength &&
+		hasUpperCase &&
+		hasLowerCase &&
+		hasNumber &&
+		hasSpecialChar;
+
+		setIsPasswordValid(isValid);
+	};
+
+	const updatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setEmployee({ ...employee, password: e.target.value });
+		validatePassword(e.target.value);
+	}
+
 	const requestCreateEmployee = () => {
-		createEmployee.mutate(employee, {
-			onSuccess: () => {
-				console.log("Empleado creado con éxito");
-				navigate("/admin/employees");
-			},
-			onError: () => {
-				console.log("Error al crear el empleado");
-			},
-		});
+		validatePassword(employee.password)
+			
+		if (isPasswordValid) {
+			createEmployee.mutate(employee, {
+				onSuccess: () => {
+					console.log("Empleado creado con éxito");
+					navigate("/admin/employees");
+				},
+				onError: () => {
+					console.log("Error al crear el empleado");
+				},
+			});
+		} else {
+			console.log("La contraseña no cumple con los criterios requeridos");
+		}
 	};
 
 	const setEmployeeSalary = (salary: string) => {
@@ -261,8 +292,20 @@ export const AdminUsersCreateEmployee = () => {
 								<Input
 									id="standard-adornment-amount"
 									color="warning"
-									onChange={(e) => setEmployee({ ...employee, password: e.target.value })}
+									value={employee.password}
+									onChange={updatePassword}
 								/>
+								<p
+									aria-live="assertive"
+									style={{fontSize: 12, color: "gray"}}>
+									Mínimo 12 caracteres, mínimo una mayúscula, una minúscula, un numero, un caracter especial (#, $, %, &, ?, ¿, !, ¡, =, /, +, -, *) y sin espacios
+								</p>
+								{isPasswordValid ? (
+        							<p style={{ color: 'green' }}>Contraseña válida</p>
+      							) : (
+        							<p style={{ color: 'red' }}>La contraseña no cumple con los criterios requeridos</p>
+      							)}
+								
 							</FormControl>
 							<Autocomplete
 								disablePortal
