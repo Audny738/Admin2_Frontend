@@ -23,7 +23,7 @@ export interface ControlledUser {
 
 export interface ListedEmployee extends ControlledUser {
 	jobDescription: string;
-	present: string;
+	present: boolean;
 	schedules: string[];
 	scheduleObjs: Schedule[] | undefined;
 }
