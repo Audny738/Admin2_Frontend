@@ -7,7 +7,6 @@ import {
 	TableRow,
 	TableCell,
 	Button,
-	Switch,
 	FormControlLabel,
 	FormControl,
 	FormLabel,
