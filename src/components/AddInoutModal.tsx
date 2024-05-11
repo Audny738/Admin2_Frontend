@@ -7,8 +7,11 @@ import {
 	TableRow,
 	TableCell,
 	Button,
-	Switch,
 	FormControlLabel,
+	FormControl,
+	FormLabel,
+	Radio, // Mantenimiento-AMS-2-2: Se importa Radio, RadioGroup y se remueve Switch
+	RadioGroup,
 } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -72,15 +75,26 @@ export const AddInoutModal = ({ isOpen, onClose, handleClose }: Props) => {
 							</TableRow>
 							<TableRow>
 								<TableCell colSpan={2}>
-									<FormControlLabel
-										control={
-											<Switch
-												checked={userInput.arriving}
-												onChange={(e) => setUserInput({ ...userInput, arriving: e.target.checked })}
-											/>
-										}
-										label={"El usuario está llegando"}
-									/>
+									<FormControl component="fieldset">
+										{/*Mantenimiento-AMS-2-2: Se Reemplazó el Switch por un RadioGroup de 2 elementos: Presente y Ausente*/}
+											<FormLabel component="legend">Selecciona una opción:</FormLabel>
+											<RadioGroup
+												name="options"
+												value={userInput.arriving}
+												onChange={(e) => setUserInput({ ...userInput, arriving: JSON.parse(e.target.value) })}
+											>
+												<FormControlLabel
+													value="true"
+													control={<Radio />}
+													label="Presente"
+												/>
+												<FormControlLabel
+													value="false"
+													control={<Radio />}
+													label="Ausente"
+												/>
+											</RadioGroup>
+										</FormControl>
 								</TableCell>
 							</TableRow>
 						</TableBody>
