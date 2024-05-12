@@ -54,19 +54,20 @@ export const Navbar = () => {
 		],
 	};
 
+	/*MAntenimiento MR-5: Se ajustó la distancia dentre el logo y los botones, además los botónes tienen margen*/
 	return (
 		<Box sx={{ display: "flex" }}>
-			<AppBar position="static" style={{ backgroundColor: "#DC7A20", padding: "0.3rem 0.5rem" }}>
+			<AppBar position="static" style={{ backgroundColor: "#DC7A20", padding: "0.3rem 1rem" }}>
 				<Toolbar variant="dense">
 					<Typography
 						variant="h4"
 						color="black"
 						component="div"
-						sx={{ flexGrow: 1, fontWeight: "bold", fontStyle: "italic" }}
+						sx={{ flexGrow: 1, fontWeight: "bold", fontStyle: "italic", marginRight: '50px'}}
 					>
 						AMS
 					</Typography>
-					<Box>
+					<Box sx={{ paddingLeft: '50px'}}>
 						{page_options[location.pathname].map((option, index) => (
 							<Link to={option.link} key={index}>
 								{option.active ? (
@@ -75,13 +76,14 @@ export const Navbar = () => {
 											color: "black",
 											backgroundColor: "#CB8B2A",
 											"&:hover": { backgroundColor: "#C7882A" },
+											margin: 0.5
 										}}
 										variant="contained"
 									>
 										{option.label}
 									</Button>
 								) : (
-									<Button sx={{ color: "black", backgroundColor: "#DC7A20" }}>
+									<Button sx={{ color: "black", backgroundColor: "#DC7A20"}}>
 										{option.label}
 									</Button>
 								)}
