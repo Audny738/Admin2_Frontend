@@ -209,17 +209,13 @@ export const AdminUsersCreateEmployee = () => {
 		}
 	};
 
-	const setScheduleEntryDay = (entry: string | null) => {
+	/*Mantenimiento AMS-4 Opción 1: Eliminó las funciones de setScheduleDayEntry y setScheduleExit y se reemplazó
+	por una función que asigna el día de entrada y salida */
+	const setScheduleDay = (entry: string | null) => {
 		const foundDay = daysArray.find((day) => day.name === entry);
-		if (foundDay) {
-			setNewSchedule({ ...newSchedule, entryDayId: foundDay.id });
-		}
-	};
 
-	const setScheduleExitDay = (exit: string | null) => {
-		const foundDay = daysArray.find((day) => day.name === exit);
 		if (foundDay) {
-			setNewSchedule({ ...newSchedule, exitDayId: foundDay.id });
+			setNewSchedule({ ...newSchedule, entryDayId: foundDay.id, exitDayId: foundDay.id});
 		}
 	};
 
@@ -413,10 +409,14 @@ export const AdminUsersCreateEmployee = () => {
 								Nuevo Horario:
 							</Typography>
 							<Table>
+							{/*Mantenimiento AMS-4 Opción 1: Se modificó el Table para que sea 3 Autocomplete
+							Un autocomplete para seleccionar el dia de entrada y salida
+							Un autocomplete para seleccionar la hora de entrada
+							Un autocomplete para seleccionar la hora de salida  */}
 								<TableBody>
 									<TableRow>
 										<TableCell>
-											<Typography>Entrada</Typography>
+											<Typography>Día</Typography>
 										</TableCell>
 										<TableCell>
 											<Autocomplete
@@ -426,12 +426,17 @@ export const AdminUsersCreateEmployee = () => {
 												sx={{ width: "100%" }}
 												color="warning"
 												onInputChange={(_event: any, newValue: string | null) =>
-													setScheduleEntryDay(newValue)
+													setScheduleDay(newValue)
 												}
 												renderInput={(params) => (
 													<TextField {...params} label="Día" color="warning" />
 												)}
 											/>
+										</TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell>
+											<Typography>Horario </Typography>
 										</TableCell>
 										<TableCell>
 											<Autocomplete
@@ -444,27 +449,7 @@ export const AdminUsersCreateEmployee = () => {
 													setNewSchedule({ ...newSchedule, entryTime: newValue + ":00" })
 												}
 												renderInput={(params) => (
-													<TextField {...params} label="Horario" color="warning" />
-												)}
-											/>
-										</TableCell>
-									</TableRow>
-									<TableRow>
-										<TableCell>
-											<Typography>Salida </Typography>
-										</TableCell>
-										<TableCell>
-											<Autocomplete
-												disablePortal
-												id="combo-box-demo"
-												options={dayLabels}
-												sx={{ width: "100%" }}
-												color="warning"
-												onInputChange={(_event: any, newValue: string | null) =>
-													setScheduleExitDay(newValue)
-												}
-												renderInput={(params) => (
-													<TextField {...params} label="Día" color="warning" />
+													<TextField {...params} label="Entrada" color="warning" />
 												)}
 											/>
 										</TableCell>
@@ -479,7 +464,7 @@ export const AdminUsersCreateEmployee = () => {
 													setNewSchedule({ ...newSchedule, exitTime: newValue + ":00" })
 												}
 												renderInput={(params) => (
-													<TextField {...params} label="Horario" color="warning" />
+													<TextField {...params} label="Salida" color="warning" />
 												)}
 											/>
 										</TableCell>
