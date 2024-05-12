@@ -209,30 +209,13 @@ export const AdminUsersCreateEmployee = () => {
 		}
 	};
 
+	/*Mantenimiento AMS-4 Opción 1: Eliminó las funciones de setScheduleDayEntry y setScheduleExit y se reemplazó
+	por una función que asigna el día de entrada y salida */
 	const setScheduleDay = (entry: string | null) => {
-		setScheduleEntryDay(entry);
-		setScheduleExitDay(entry);
-
-		console.log()
-	};
-
-	const setScheduleEntryDay = (entry: string | null) => {
 		const foundDay = daysArray.find((day) => day.name === entry);
-		
-		console.log(foundDay)
 
 		if (foundDay) {
-			setNewSchedule({ ...newSchedule, entryDayId: foundDay.id });
-		}
-	};
-
-	const setScheduleExitDay = (exit: string | null) => {
-		const foundDay = daysArray.find((day) => day.name === exit);
-
-		console.log(foundDay)
-
-		if (foundDay) {
-			setNewSchedule({ ...newSchedule, exitDayId: foundDay.id });
+			setNewSchedule({ ...newSchedule, entryDayId: foundDay.id, exitDayId: foundDay.id});
 		}
 	};
 
@@ -426,6 +409,10 @@ export const AdminUsersCreateEmployee = () => {
 								Nuevo Horario:
 							</Typography>
 							<Table>
+							{/*Mantenimiento AMS-4 Opción 1: Se modificó el Table para que sea 3 Autocomplete
+							Un autocomplete para seleccionar el dia de entrada y salida
+							Un autocomplete para seleccionar la hora de entrada
+							Un autocomplete para seleccionar la hora de salida  */}
 								<TableBody>
 									<TableRow>
 										<TableCell>
