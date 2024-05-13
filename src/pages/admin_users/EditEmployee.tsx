@@ -175,7 +175,6 @@ export const AdminUsersEditEmployee = () => {
 			trashSchedule.push(scheduleId);
 		}
 		handleCloseDelete();
-		console.log(trashSchedule);
 	};
 
 	const requestEmployee = (userId: number) => {
