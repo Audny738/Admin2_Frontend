@@ -12,6 +12,7 @@ import {
 import { Job } from "../interfaces";
 import React, { Dispatch } from "react";
 import { useCreateJob } from "../api";
+import { useGetJobs } from "../api";
 
 interface Props {
 	isOpen: boolean;
@@ -32,6 +33,7 @@ const style = {
 
 export const AddJobsModal = ({ isOpen, onClose, setJobs }: Props) => {
 	const createJob = useCreateJob();
+	const getJobs = useGetJobs();
 	const [job, setJob] = React.useState<Job>({
 		id: 0,
 		name: "",
@@ -42,11 +44,23 @@ export const AddJobsModal = ({ isOpen, onClose, setJobs }: Props) => {
 		createJob.mutate(job, {
 			onSuccess: () => {
 				console.log("Puesto de trabajo creado con éxito");
-				setJobs((previous) => [...previous, job]);
+				setNewJob()
 				onClose();
 			},
 			onError: () => {
 				console.log("Error al crear puesto de trabajo");
+			},
+		});
+	};
+
+	const setNewJob = () => {
+		getJobs.mutate(undefined, {
+			onSuccess: (data) => {
+				console.log(data[data.length-1])
+				setJobs((previous) => [...previous, data[data.length-1]]);
+			},
+			onError: () => {
+				console.log("Error al cargar puestos de trabajo");
 			},
 		});
 	};
