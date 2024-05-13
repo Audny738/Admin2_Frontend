@@ -70,6 +70,9 @@ interface Column {
 	minWidth: number;
 }
 
+/*Mantenimiento MR-7: Se movió la lista trashSchedule para que sea una variable global y así permitir elimimar horarios */
+let trashSchedule: number[] = [];
+
 export const AdminUsersEditEmployee = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -119,7 +122,6 @@ export const AdminUsersEditEmployee = () => {
 		},
 		exitTime: "",
 	});
-	var trashSchedule: number[] = [];
 
 	interface ScheduleEditionStructure {
 		id: number;
@@ -238,17 +240,12 @@ export const AdminUsersEditEmployee = () => {
 		}
 	};
 
-	const setScheduleEntryDay = (entry: string | null) => {
+	/*Mantenimiento AMS-7 Opción 1: Eliminó las funciones de setScheduleDayEntry y setScheduleExit y se reemplazó
+	por una función que asigna el día de entrada y salida */
+	const setScheduleDay = (entry: string | null) => {
 		const foundDay = daysArray.find((day) => day.name === entry);
 		if (foundDay) {
-			setNewSchedule({ ...newSchedule, entryDay: foundDay });
-		}
-	};
-
-	const setScheduleExitDay = (exit: string | null) => {
-		const foundDay = daysArray.find((day) => day.name === exit);
-		if (foundDay) {
-			setNewSchedule({ ...newSchedule, exitDay: foundDay });
+			setNewSchedule({ ...newSchedule, entryDay: foundDay, exitDay: foundDay});
 		}
 	};
 
@@ -377,6 +374,7 @@ export const AdminUsersEditEmployee = () => {
 								sx={{ width: "95%", marginTop: "10%" }}
 								color="warning"
 								value={{ label: employee.job.name }}
+								isOptionEqualToValue={(option, value) => option.label === value.label}
 								onInputChange={(_event: any, newValue: string | null) =>
 									setEmployeeJobEntity(newValue)
 								}
@@ -487,7 +485,7 @@ export const AdminUsersEditEmployee = () => {
 								<TableBody>
 									<TableRow>
 										<TableCell>
-											<Typography>Entrada</Typography>
+											<Typography>Día</Typography>
 										</TableCell>
 										<TableCell>
 											<Autocomplete
@@ -497,12 +495,17 @@ export const AdminUsersEditEmployee = () => {
 												sx={{ width: "100%" }}
 												color="warning"
 												onInputChange={(_event: any, newValue: string | null) =>
-													setScheduleEntryDay(newValue)
+													setScheduleDay(newValue)
 												}
 												renderInput={(params) => (
 													<TextField {...params} label="Día" color="warning" />
 												)}
 											/>
+										</TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell>
+											<Typography>Horario</Typography>
 										</TableCell>
 										<TableCell>
 											<Autocomplete
@@ -515,27 +518,7 @@ export const AdminUsersEditEmployee = () => {
 													setNewSchedule({ ...newSchedule, entryTime: newValue + ":00" })
 												}
 												renderInput={(params) => (
-													<TextField {...params} label="Horario" color="warning" />
-												)}
-											/>
-										</TableCell>
-									</TableRow>
-									<TableRow>
-										<TableCell>
-											<Typography>Salida </Typography>
-										</TableCell>
-										<TableCell>
-											<Autocomplete
-												disablePortal
-												id="combo-box-demo"
-												options={dayLabels}
-												sx={{ width: "100%" }}
-												color="warning"
-												onInputChange={(_event: any, newValue: string | null) =>
-													setScheduleExitDay(newValue)
-												}
-												renderInput={(params) => (
-													<TextField {...params} label="Día" color="warning" />
+													<TextField {...params} label="Entrada" color="warning" />
 												)}
 											/>
 										</TableCell>
@@ -550,7 +533,7 @@ export const AdminUsersEditEmployee = () => {
 													setNewSchedule({ ...newSchedule, exitTime: newValue + ":00" })
 												}
 												renderInput={(params) => (
-													<TextField {...params} label="Horario" color="warning" />
+													<TextField {...params} label="Salida" color="warning" />
 												)}
 											/>
 										</TableCell>
@@ -588,7 +571,7 @@ export const AdminUsersEditEmployee = () => {
 								<TableBody>
 									<TableRow>
 										<TableCell>
-											<Typography>Entrada</Typography>
+											<Typography>Día</Typography>
 										</TableCell>
 										<TableCell>
 											<Autocomplete
@@ -598,13 +581,19 @@ export const AdminUsersEditEmployee = () => {
 												sx={{ width: "100%" }}
 												color="warning"
 												value={{ label: newSchedule.entryDay.name }}
+												isOptionEqualToValue={(option, value) => option.label === value.label}
 												onInputChange={(_event: any, newValue: string | null) =>
-													setScheduleEntryDay(newValue)
+													setScheduleDay(newValue)
 												}
 												renderInput={(params) => (
 													<TextField {...params} label="Día" color="warning" />
 												)}
 											/>
+										</TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell>
+											<Typography>Horario</Typography>
 										</TableCell>
 										<TableCell>
 											<Autocomplete
@@ -614,32 +603,12 @@ export const AdminUsersEditEmployee = () => {
 												sx={{ width: "100%" }}
 												color="warning"
 												value={{ label: newSchedule.entryTime }}
+												isOptionEqualToValue={(option, value) => option.label === value.label}
 												onInputChange={(_event: any, newValue: string) =>
 													setNewSchedule({ ...newSchedule, entryTime: newValue })
 												}
 												renderInput={(params) => (
-													<TextField {...params} label="Horario" color="warning" />
-												)}
-											/>
-										</TableCell>
-									</TableRow>
-									<TableRow>
-										<TableCell>
-											<Typography>Salida </Typography>
-										</TableCell>
-										<TableCell>
-											<Autocomplete
-												disablePortal
-												id="combo-box-demo"
-												options={dayLabels}
-												sx={{ width: "100%" }}
-												color="warning"
-												value={{ label: newSchedule.exitDay.name }}
-												onInputChange={(_event: any, newValue: string | null) =>
-													setScheduleExitDay(newValue)
-												}
-												renderInput={(params) => (
-													<TextField {...params} label="Día" color="warning" />
+													<TextField {...params} label="Entrada" color="warning" />
 												)}
 											/>
 										</TableCell>
@@ -651,11 +620,12 @@ export const AdminUsersEditEmployee = () => {
 												sx={{ width: "100%" }}
 												color="warning"
 												value={{ label: newSchedule.exitTime }}
+												isOptionEqualToValue={(option, value) => option.label === value.label}
 												onInputChange={(_event: any, newValue: string) =>
 													setNewSchedule({ ...newSchedule, exitTime: newValue })
 												}
 												renderInput={(params) => (
-													<TextField {...params} label="Horario" color="warning" />
+													<TextField {...params} label="Salida" color="warning" />
 												)}
 											/>
 										</TableCell>
