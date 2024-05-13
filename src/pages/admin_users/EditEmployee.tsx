@@ -70,6 +70,7 @@ interface Column {
 	minWidth: number;
 }
 
+/*Mantenimiento MR-7: Se movió la lista trashSchedule para que sea una variable global y así permitir elimimar horarios */
 let trashSchedule: number[] = [];
 
 export const AdminUsersEditEmployee = () => {
